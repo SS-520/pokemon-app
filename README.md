@@ -7,6 +7,17 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
+## 目的
+
+- [【React アプリ開発】3 種類の React アプリケーションを構築して、React の理解をさらに深めるステップアップ講座](https://www.udemy.com/course/react-3project-app-udemy/learn/lecture/32873974#overview)
+  アプリ１を実践学習
+- `npm create vite@latest`にてプロジェクト作成
+  - 2025/09 時点で推奨の Vite と Next.js を比較し、サーバーサイドは今回不要と判断 ⇒ Vite を採用
+- Framework: React
+- Variant: TypeScript + React Compiler
+  - 2025/09 現在で比較的推奨されているようなので採用。
+    挙動がおかしいようなら無効にする予定（開発前時点）
+
 ## React Compiler
 
 The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
@@ -42,15 +53,15 @@ export default defineConfig([
       // other options...
     },
   },
-])
+]);
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from 'eslint-plugin-react-x';
+import reactDom from 'eslint-plugin-react-dom';
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -71,5 +82,5 @@ export default defineConfig([
       // other options...
     },
   },
-])
+]);
 ```
