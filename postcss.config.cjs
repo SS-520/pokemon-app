@@ -4,16 +4,14 @@
 module.exports = {
   plugins: [
     // 1. メディアクエリのソートと結合 (postcss-sort-media-queries)
-    // 開発/本番問わず、Sassでネストしたメディアクエリをまとめます
+    // 開発時 (npm run dev) でも常にメディアクエリを結合・ソート
     require('postcss-sort-media-queries')({
-      sort: 'mobile-first', // モバイルファーストの順序で並び替えます
+      sort: 'mobile-first',
     }),
 
-    // 2. CSSの圧縮 (cssnano)
-    // NODE_ENV が 'production' (npm run build 実行時) の場合のみ圧縮を有効にします
+    // 本番ビルド時 (npm run build) のみ cssnano で完全に圧縮
     process.env.NODE_ENV === 'production' &&
       require('cssnano')({
-        // デフォルトのプリセットで最大限に圧縮
         preset: 'default',
       }),
 
