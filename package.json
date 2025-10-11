@@ -6,7 +6,7 @@
   "scripts": {
     "vite-dev": "vite",
     "dev": "npm-run-all -p vite-dev sync",
-    "sync": "browser-sync start --proxy http://localhost:5173 --files 'src/**/*.{js,jsx,ts,tsx,html,css}'",
+    "sync": "browser-sync start --proxy http://localhost:5173 --files 'src/**/*.{js,jsx,ts,tsx,html,css,scss}' --no-open",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
