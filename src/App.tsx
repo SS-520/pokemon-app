@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import './App.css';
+import './App.scss';
 import type { PokemonListResponse } from './utilities/types'; // PokemonListResponse型を使用（type{型}）
 import { getAllPokemon } from './utilities/pokemon'; // getAllPokemon関数を呼び出し
 
