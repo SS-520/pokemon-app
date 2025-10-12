@@ -1,5 +1,5 @@
 /* パーツとして使用する関数を記述 */
-import type { PokemonListResponse } from './types'; // ユーザー定義型を読み込む（type{型}）
+import type { PokemonResult, PokemonListResponse } from './types'; // ユーザー定義型を読み込む（type{型}）
 
 // ポケモンAPIからデータを取得する
 /*** @name getAllPokemon
@@ -38,3 +38,32 @@ export const getAllPokemon = (url: string): Promise<PokemonListResponse> => {
       });
   });
 };
+
+/*** @name loadPokemon
+ *   @function
+ *   @type
+ *   @param data:PokemonResult[]
+ *   @return
+ */
+// loadPokemonの詳細
+// 引数はresults = PokemonResult型の配列
+export const loadPokemon = (data: PokemonResult[]) => {
+  // 内部変数_pokemonDataを定義
+  // Promise.all()内部の処理がすべて終わったら結果をpokemonDataに格納
+  const _pokemonData = Promise.all(
+    // 引数で受け取ったdata[]に対し、mapで同じ処理を全配列に行う
+    data.map((pokemon) => {
+      // console.log(pokemon);
+      const pokemonRecord = getPokemon(pokemon.url);
+      return pokemonRecord; //戻り値は_pokemonDataに格納される
+    }),
+  );
+};
+
+/*** @name getPokemon
+ *   @function
+ *   @type
+ *   @param url:string
+ *   @return
+ */
+export const getPokemon = () => {};

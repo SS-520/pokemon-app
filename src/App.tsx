@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.scss';
 import type { PokemonListResponse } from './utilities/types'; // PokemonListResponse型を使用（type{型}）
-import { getAllPokemon } from './utilities/pokemon'; // getAllPokemon関数を呼び出し
+import { getAllPokemon, loadPokemon } from './utilities/pokemon'; // getAllPokemon関数を呼び出し
 
 function App() {
   // 土台になるポケモンAPIのURLを指定
@@ -26,6 +26,10 @@ function App() {
         const resPokemon: PokemonListResponse = await getAllPokemon(initialURL); // src/utilities/pokemon.tsxの関数にAPIのUPLを渡す
         console.log(resPokemon); // 結果を出力
 
+        // 各ポケモンの詳細なデータを取得
+        // 全データの中のresults配列を引数で渡す
+        loadPokemon(resPokemon.results);
+
         // ローディング完了のため変数loadingをfalseに変更
         setLoading(false);
       } catch (error) {
@@ -35,6 +39,7 @@ function App() {
     };
     fetchPokemonData(); // 定義した非同期関数を実行
   }, []);
+
   // 変数loadingの状態で画面の表示を変更⇒短いのでifを使用せず３項演算子で済ませる
   // 条件文 ? trueの処理 : falseの処理
   return <div className='App'>{loading ? <h1>Now Loading</h1> : <h1>ポケモンAPI</h1>}</div>;
