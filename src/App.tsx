@@ -34,7 +34,7 @@ function App() {
         setLoading(false);
       } catch (error) {
         // awaitの処理が失敗（reject）されたらこっちに入る(引数：error)
-        console.error('データ取得中にエラーが発生しました:', error);
+        console.error('fetchPokemonData()においてデータ取得中にエラーが発生しました:', error);
       }
     };
     fetchPokemonData(); // 定義した非同期関数を実行
