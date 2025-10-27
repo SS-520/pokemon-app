@@ -68,6 +68,12 @@ export const getAllPokemon = (url: string): ResultAsync<PokemonListResponse, Fet
   );
 };
 
+//
+//// ↓↓ 各ポケモンの詳細を取得する処理2つ ↓↓ ////
+// * loadPokemon()
+// * getPokemon()
+//
+
 /*** @name loadPokemon
  *   @function
  *   @type PokemonDetail[]
@@ -157,7 +163,11 @@ const getPokemon = (url: string): ResultAsync<PokemonDetail, FetchError> => {
   );
 };
 
-/*** @name getAllPokemonPromise（使わない・参考用に残す）
+//
+//// ↓↓ リライト元の非同期処理（使わない・参考用） ↓↓ ////
+//
+
+/*** @name getAllPokemonPromise
  *   @function
  *   @type PokemonListResponse
  *   @param url
@@ -194,7 +204,9 @@ const getPokemon = (url: string): ResultAsync<PokemonDetail, FetchError> => {
 //   });
 // };
 
-/*** @name loadPokemonTryCatch（使わない・参考用に残す）
+//
+
+/*** @name loadPokemonTryCatch
  *   @function
  *   @type PokemonDetail[]
  *   @param data:PokemonResult[]
@@ -234,7 +246,9 @@ const getPokemon = (url: string): ResultAsync<PokemonDetail, FetchError> => {
 //   }
 // };
 
-/*** @name getPokemonTryCatch（使わない・参考用に残す）
+//
+
+/*** @name getPokemonTryCatch
  *   @function
  *   @type PokemonDetail
  *   @param url:string
@@ -278,7 +292,9 @@ const getPokemon = (url: string): ResultAsync<PokemonDetail, FetchError> => {
 //   }
 // };
 
-/* Promise/.then構文での記法（使用しない・参考用に残す） */
+//
+
+/* Promise/.then構文での記法 */
 // export const getPokemonPromise = (url: string) => {
 //   // APIで取得した情報を戻す
 //   return new Promise<PokemonDetail>((resolve, reject) => {
