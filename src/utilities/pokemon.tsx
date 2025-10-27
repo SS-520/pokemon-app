@@ -2,6 +2,38 @@
 import type { FetchError, PokemonResult, PokemonListResponse, PokemonDetail } from './types'; // ユーザー定義型を読み込む（type{型}）
 import { ResultAsync, fromPromise, err } from 'neverthrow'; // neverthrowライブラリを読み込み
 
+//
+// 処理記載開始
+//
+
+/*** @name fetchPokemonData
+ *   @function
+ *   @param initialURL:string(ポケモンAPI)
+ *   @return ResultAsync<PokemonDetail[], FetchError>
+ *  ポケモンAPIからデータを取得・加工する全体処理
+ *  neverthrow構文使用
+ *  内部関数のエラーの結果は、すべてFetchErrorに格納されて排出される
+ */
+
+export const fetchPokemonData = (initialURL: string): ResultAsync<PokemonDetail[], FetchError> => {
+  // 1.全ポケデータを取得
+  // andThenでチェーンで以下の処理を繋ぎ、すべて終わったら親関数に戻す
+  //  1. getAllPokemon(initialURL)でポケモン全情報を取得
+  //  2. 成功したらgetAllPokemon()の成功結果を使ってloadPokemon()実行
+  //  3. loadPokemon()の戻り値がgetAllPokemon()に届く
+  //  4. getAllPokemon()に届いた値をfetchPokemonData()の戻り値としてreturnする
+  // 最終的に ResultAsync型 で戻る
+  return (
+    getAllPokemon(initialURL) // src/utilities/pokemon.tsxの関数にAPIのUPLを渡す
+      // 成功したら andThen で次の処理
+      //  成功結果を変数resAllPokemonに格納して処理
+      .andThen((resAllPokemon) => {
+        // loadPokemon()が成功⇒結果をgetPokemonInfoに格納
+        return loadPokemon(resAllPokemon.results);
+      })
+  );
+};
+
 /*** @name getAllPokemon
  *   @function
  *   @type PokemonListResponse
@@ -11,7 +43,7 @@ import { ResultAsync, fromPromise, err } from 'neverthrow'; // neverthrowライ�
  *  neverthrow構文使用
  */
 
-export const getAllPokemon = (url: string): ResultAsync<PokemonListResponse, FetchError> => {
+const getAllPokemon = (url: string): ResultAsync<PokemonListResponse, FetchError> => {
   // fetch処理を「大声（例外）を出す Promise」として neverthrowのメソッド・fromPromise でラップ
   // fromPromiseはneverthrowのメソッド・「ResultAsyncの箱」に変身させる道具なので、戻り値の型はPromise型かつResultAsync<成功,失敗>
   // 成功：Response≒fetchのresolve
@@ -20,8 +52,8 @@ export const getAllPokemon = (url: string): ResultAsync<PokemonListResponse, Fet
     fetch(url), // fetchは成功時にPromise<Response>を返す
     (error: unknown): FetchError => ({
       // errorは暗黙的にunknownと推察される
-      // ❌ Promiseが reject (ネットワークエラーなど) されたとき、
-      //    その例外(Error)を Err の失敗報告書(FetchError)に変換する
+      // Promiseが reject (ネットワークエラーなど) されたとき、
+      //    その例外(Error)を Err の失敗報告書(FetchError型)に変換する
       type: 'NETWORK_ERROR',
       message: `ネットワーク接続に失敗: ${(error as Error).message}`,
       // ここではerrorがunknownのままだとプロパティが使用できない
@@ -83,7 +115,7 @@ export const getAllPokemon = (url: string): ResultAsync<PokemonListResponse, Fet
  *  ※Neverthrow combine + mapで処理
  */
 // loadPokemonの詳細
-export const loadPokemon = (data: PokemonResult[]): ResultAsync<PokemonDetail[], FetchError> => {
+const loadPokemon = (data: PokemonResult[]): ResultAsync<PokemonDetail[], FetchError> => {
   // neverthrowライブラリで処理
   // 引数で受け取ったdata[]に対し、mapで同じ処理を全配列に行う
   // 配列の個々のデータ名を pokemon と定義
@@ -115,8 +147,8 @@ const getPokemon = (url: string): ResultAsync<PokemonDetail, FetchError> => {
     fetch(url), // fetchは成功時にPromise<Response>を返す
     (error: unknown): FetchError => ({
       // errorは暗黙的にunknownと推察される
-      // ❌ Promiseが reject (ネットワークエラーなど) されたとき、
-      //    その例外(Error)を Err の失敗報告書(FetchError)に変換する
+      //  Promiseが reject (ネットワークエラーなど) されたとき、
+      //    その例外(Error)を Err の失敗報告書(FetchError型)に変換する
       type: 'NETWORK_ERROR',
       message: `ネットワーク接続に失敗: ${(error as Error).message}`,
       // ここではerrorがunknownのままだとプロパティが使用できない

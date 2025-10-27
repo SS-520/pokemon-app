@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Result } from 'neverthrow';
-import type { PokemonListResponse, PokemonDetail, FetchError } from './utilities/types'; // PokemonListResponse型を使用（type{型}）
-import { getAllPokemon, loadPokemon } from './utilities/pokemon'; // getAllPokemon関数を呼び出し
+import type { PokemonDetail, FetchError } from './utilities/types'; // PokemonListResponse型を使用（type{型}）
+import { fetchPokemonData } from './utilities/pokemon'; // getAllPokemon関数を呼び出し
 import Card from './components/Card';
 import './App.scss';
+import type { Result } from 'neverthrow';
 
 function App() {
   // 土台になるポケモンAPIのURLを指定
@@ -11,7 +11,7 @@ function App() {
 
   // ローディング画面設定
   // 画面の状態管理のためuseStateを使用
-  // ロード中/ロード済の二択なのでbooleanで版担
+  // ロード中/ロード済の二択なのでbooleanで判断
   // 初期値⇒リロード＝ローディング中＝true
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -21,39 +21,36 @@ function App() {
   // ブラウザロード時実行
   // 一度だけ実行⇒第二引数は[]で空配列
   useEffect(() => {
-    // 非同期処理でAPIから情報取得処理を定義
-    const fetchPokemonData = async (): Promise<void> => {
-      try {
-        // 失敗の可能性がある処理（awaitで呼び出す関数）
+    //
+    // 非同期記述エリア ↓↓
+    const asynchroFunction = async () => {
+      // 非同期処理でAPIから情報取得処理を定義
 
-        // 全ポケデータを取得
-        // getAllPokemon()の処理が終わるまで待機してからresPokemonに格納
-        const resPokemon: PokemonListResponse = await getAllPokemon(initialURL); // src/utilities/pokemon.tsxの関数にAPIのUPLを渡す
-        // console.log(resPokemon); // 結果を出力
+      // fetch処理一式実行
+      // エラー含めResult型で結果が戻ってくる
+      const resultPokemonData: Result<PokemonDetail[], FetchError> = await fetchPokemonData(initialURL);
 
-        // 各ポケモンの詳細なデータを取得
-        // loadPokemon()の処理が終わるまで待ち、全データの中のresults配列を引数で渡す
-        // awaitで配列状態になってから渡ってくる⇒Promise<PokemonDetail[]>ではなく、PokemonDetail[]の配列型でOK
+      // resultPokemonData:Resultは成功も失敗も内包⇒matchで分岐処理
+      resultPokemonData.match(
+        // 成功：変数pokemonData
+        (pokemonData) => {
+          // 結果をpokemonDetailDataに格納（更新）
+          setPokemonDetailData(pokemonData);
+        },
+        // 失敗：変数fetchError
+        (fetchError) => {
+          // FetchError を処理
+          console.error(`[データ取得失敗] エラータイプ: ${fetchError.type}`, fetchError);
+        },
+      );
 
-        // neverthrow構文使用
-        const resLoadPokemon: Result<PokemonDetail[], FetchError> = await loadPokemon(resPokemon.results);
-        resLoadPokemon.match(
-          // 成功：PokemonDetail[]の中身を変数pokemonに格納
-          (pokemon) => setPokemonDetailData(pokemon),
-          (error) => console.error(`[Combine 失敗]: エラーコード: ${error}`),
-        );
-
-        // resLoadPokemonをfetchPokemonDataのスコープ外で使用するので、PokemonDetailDataに格納
-      } catch (error) {
-        // awaitの処理が失敗（reject）されたらこっちに入る(引数：error)
-        console.error('fetchPokemonData()においてデータ取得中にエラーが発生しました:', error);
-      }
-      // 全部終わったらローディング完了のため変数loadingをfalseに変更
+      // ローディング解除
       setLoading(false);
     };
+    // 非同期記述エリア ↑↑
 
-    // fetch処理一式実行
-    fetchPokemonData();
+    // 非同期処理実行
+    asynchroFunction();
   }, []);
 
   // 変数loadingの状態で画面の表示を変更⇒短いのでifを使用せず３項演算子で済ませる
