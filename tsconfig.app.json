@@ -7,13 +7,15 @@
     "module": "ESNext",
     "types": ["vite/client"],
     "skipLibCheck": true,
+    "composite": true,
 
     /* Bundler mode */
+    "emitDeclarationOnly": true, //noEmitをtrue＋allowImportingTsExtensions有効のため追加
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "noEmit": false, // 型定義ファイルを作成するため
     "jsx": "react-jsx",
 
     /* Linting */
