@@ -27,6 +27,18 @@ interface PokemonMove {
     name: string; // 技の名前
     url: string; // 技の詳細URL
   };
+  version_group_details: {
+    level_learned_at: number; // 覚えるレベル
+    move_learn_method: {
+      name: string;
+      url: string;
+    };
+    order: number | null;
+    version_group: {
+      name: string; // ソフト名
+      url: string;
+    };
+  };
 }
 
 // 種族値（ステータス）を表す型 (例: HP, Attack, Defense)
@@ -64,6 +76,11 @@ interface PokemonAbilities {
   slot: number;
 }
 
+// 過去世代特性に対応
+interface PokemonPastAbility extends PokemonAbilities {
+  name: string | null; // 過去世代からの変更がない場合null
+}
+
 // 姿の情報（？）
 interface PokemonForms {
   name: string;
@@ -99,11 +116,20 @@ interface PokemonHeldItems {
 
 // 過去の特性
 interface PokemonPastAbilities {
-  abilities: PokemonAbilities[];
+  abilities: PokemonPastAbility[]; // 過去世代からの変更に対応したextend型
   generation: {
     name: string;
     url: string;
   };
+}
+
+// 過去バージョンでのタイプ
+interface PokemonPastTypes {
+  generation: {
+    name: string; // n世代目
+    url: string;
+  };
+  types: PokemonTypes[];
 }
 
 // 画像
@@ -126,7 +152,7 @@ export interface PokemonDetail {
   name: string; // ポケモンの名前 (bulbasaur, ivysaur...)
   height: number; // ポケモンの高さ (デシメートル単位)
   weight: number; // ポケモンの重さ (ヘクトグラム単位)
-  sprites: PokemonSprites[]; // ポケモンの画像
+  sprites: PokemonSprites; // ポケモンの画像
   moves: PokemonMove[]; // 覚える技のリスト（Move型の配列）
   stats: PokemonStatus[]; // 種族値のリスト（stats型の配列）
   types: PokemonTypes[]; // ポケモンのタイプ
@@ -140,7 +166,7 @@ export interface PokemonDetail {
   location_area_encounters: string; // 遭遇場所のリンク
   order: number; // 全国図鑑の番号
   past_abilities: PokemonPastAbilities[]; // 過去世代で持っていた特性一覧
-  // past_types: [];  // 過去世代で持っていたタイプの一覧
+  past_types: PokemonPastTypes[]; // 過去世代で持っていたタイプの一覧
 }
 
 // neverthrow で使用するエラー型
