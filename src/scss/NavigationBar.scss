@@ -1,0 +1,13 @@
+// ナビゲーションバーのスタイル
+
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
+nav {
+  font-family: 'Dela Gothic One', sans-serif;
+  background-color: #dd1e24;
+  color: #fff2f2;
+  height: 10vh;
+  font-size: 5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,9 +1,15 @@
+// 基本設定と拡張機能
 import { useEffect, useState } from 'react';
+import type { Result } from 'neverthrow';
+
+// 外部の関数・型定義ファイル
 import type { PokemonDetail, FetchError } from './utilities/types'; // PokemonListResponse型を使用（type{型}）
 import { fetchPokemonData } from './utilities/pokemon'; // getAllPokemon関数を呼び出し
-import Card from './components/Card';
 import './scss/App.scss'; // viteがコンパイル時にcssに自動で処理するので、importはscssでOK
-import type { Result } from 'neverthrow';
+
+// 読み込むコンポーネント
+import Card from './components/Card';
+import NavigationBar from './components/NavigationBar';
 
 function App() {
   // 土台になるポケモンAPIのURLを指定
@@ -56,23 +62,26 @@ function App() {
   // 変数loadingの状態で画面の表示を変更⇒短いのでifを使用せず３項演算子で済ませる
   // 条件文 ? trueの処理 : falseの処理
   return (
-    <div className='App'>
-      {loading ? (
-        <h1>Now Loading</h1>
-      ) : (
-        /* ロード完了後のメイン処理 */
-        <div className='pokemonCardContainer'>
-          {pokemonDetailData.map((pokemon: PokemonDetail, i: number) => {
-            // 配列pokemonDetailDataの各データをpokemonをする
-            // i = index(0~19)
-            // Cardコンポーネントを呼び出す
-            // key:配列ループのindex
-            // props名：pokemon(引数pokemonを渡す)
-            return <Card key={i} pokemon={pokemon} />;
-          })}
-        </div>
-      )}
-    </div>
+    <>
+      <NavigationBar />
+      <div className='App'>
+        {loading ? (
+          <h1>Now Loading</h1>
+        ) : (
+          /* ロード完了後のメイン処理 */
+          <div className='pokemonCardContainer'>
+            {pokemonDetailData.map((pokemon: PokemonDetail, i: number) => {
+              // 配列pokemonDetailDataの各データをpokemonをする
+              // i = index(0~19)
+              // Cardコンポーネントを呼び出す
+              // key:配列ループのindex
+              // props名：pokemon(引数pokemonを渡す)
+              return <Card key={i} pokemon={pokemon} />;
+            })}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
