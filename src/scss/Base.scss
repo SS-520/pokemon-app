@@ -1,0 +1,14 @@
+/* 全ページの基本設定 */
+.App {
+  text-align: center;
+  width: 100%;
+  height: 100vh;
+}
+
+// 各ポケモンのカードをグリッドで表示
+.pokemonCardContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}

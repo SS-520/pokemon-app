@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { PokemonDetail, FetchError } from './utilities/types'; // PokemonListResponse型を使用（type{型}）
 import { fetchPokemonData } from './utilities/pokemon'; // getAllPokemon関数を呼び出し
 import Card from './components/Card';
-import './App.scss';
+import './scss/App.scss'; // viteがコンパイル時にcssに自動で処理するので、importはscssでOK
 import type { Result } from 'neverthrow';
 
 function App() {
@@ -61,7 +61,7 @@ function App() {
         <h1>Now Loading</h1>
       ) : (
         /* ロード完了後のメイン処理 */
-        <div className='pokemonCardcontainer'>
+        <div className='pokemonCardContainer'>
           {pokemonDetailData.map((pokemon: PokemonDetail, i: number) => {
             // 配列pokemonDetailDataの各データをpokemonをする
             // i = index(0~19)
