@@ -46,7 +46,7 @@ const Card = ({ pokemon }: CardProps): React.ReactNode => {
       </div>
       <div className='cardInfo'>
         <div className='cardData'>
-          <p className='title'>平均体長：{pokemon.height}m</p>
+          <p className='title'>平均体長：{pokemon.height / 10}m</p>
         </div>
         <div className='cardData'>
           <p className='title'>平均体重：{pokemon.weight / 10}kg</p>
