@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 import type { Result } from 'neverthrow';
 
 // 外部の関数・型定義ファイル
-import type { PokemonDetail, FetchError } from './utilities/types'; // PokemonListResponse型を使用（type{型}）
-import { fetchPokemonData } from './utilities/pokemon'; // getAllPokemon関数を呼び出し
+import type { PokemonListResponse, PokemonDetail, FetchError, PokemonDetailAndURL } from './utilities/types'; // PokemonListResponse型を使用（type{型}）
+import { fetchPokemonData } from './utilities/fetchPokemon'; // getAllPokemon関数を呼び出し
+import { movePage } from './utilities/function'; // getAllPokemon関数を呼び出し
 import './scss/App.scss'; // viteがコンパイル時にcssに自動で処理するので、importはscssでOK
 
 // 読み込むコンポーネント
@@ -14,6 +15,14 @@ import NavigationBar from './components/NavigationBar';
 function App() {
   // 土台になるポケモンAPIのURLを指定
   const initialURL: string = 'https://pokeapi.co/api/v2/pokemon';
+
+  // 前ページ分のデータを取得するためのURL
+  //    型は元定義の「PokemonListResponse」から取得
+  const [preURL, setPreURL] = useState<PokemonListResponse['previous']>(null);
+
+  // 次ページ分のデータを取得するためのURL
+  //    型は元定義の「PokemonListResponse」から取得
+  const [nextURL, setNextURL] = useState<PokemonListResponse['next']>(null);
 
   // ローディング画面設定
   // 画面の状態管理のためuseStateを使用
@@ -34,14 +43,20 @@ function App() {
 
       // fetch処理一式実行
       // エラー含めResult型で結果が戻ってくる
-      const resultPokemonData: Result<PokemonDetail[], FetchError> = await fetchPokemonData(initialURL);
+      const resultPokemonData: Result<PokemonDetailAndURL, FetchError> = await fetchPokemonData(initialURL);
 
       // resultPokemonData:Resultは成功も失敗も内包⇒matchで分岐処理
       resultPokemonData.match(
         // 成功：変数pokemonData
-        (pokemonData) => {
+        (resPokemonData) => {
+          // 前ページ情報取得URLを格納
+          setPreURL(resPokemonData.previous);
+
+          // 次ページ情報取得URLを格納
+          setNextURL(resPokemonData.next);
+
           // 結果をpokemonDetailDataに格納（更新）
-          setPokemonDetailData(pokemonData);
+          setPokemonDetailData(resPokemonData.pokemonDetailData);
         },
         // 失敗：変数fetchError
         (fetchError) => {
@@ -80,6 +95,10 @@ function App() {
             })}
           </div>
         )}
+        <div className='btn'>
+          {preURL !== null ? <button onClick={() => movePage(preURL)}>前へ</button> : <></>}
+          {nextURL !== null ? <button onClick={() => movePage(nextURL)}>次へ</button> : <></>}
+        </div>
       </div>
     </>
   );
