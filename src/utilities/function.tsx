@@ -53,20 +53,21 @@ export const asynchroFunction = async (url: string, setPreURL: setURL, setNextUR
 
 // ページ遷移処理
 /*** @name movePage
- *   @function
+ *   @function:void（戻り値無）
  *   @param url:string(ポケモンAPI)
  *   @param setPreURL:setURL(前ページURL更新,useState)
  *   @param setNextURL:setURL(次ページURL更新,useState)
  *   @param setIsLoading:setBoolean(ローディング判定,useState)
  *   @param setPokemonDetailData:setTypePokemonDetailData(個々のポケモンデータの配列)
  *   @return void
- *  ポケモンAPIからデータを取得・加工する全体処理
- *  neverthrow構文使用
- *  内部関数のエラーの結果は、すべてFetchErrorに格納されて排出される
+ *  前後のページに遷移・該当ページに表示するポケモン情報を取得／表示する
+ *  処理が同じなのでブラウザ表示時のasynchroFunction()を使用する
  */
 
 export const movePage = (url: string, setPreURL: setURL, setNextURL: setURL, setIsLoading: setBoolean, setPokemonDetailData: setTypePokemonDetailData): void => {
   // ロード中にする
   setIsLoading(true);
+
+  // 指定URLでAPIを実行し内容を表示する
   asynchroFunction(url, setPreURL, setNextURL, setIsLoading, setPokemonDetailData);
 };
