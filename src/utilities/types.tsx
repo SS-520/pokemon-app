@@ -1,4 +1,5 @@
 // ユーザー定義の型の集積ファイル
+import type { Dispatch, SetStateAction } from 'react';
 // ＊外部から呼び出すのが全体の定義⇒export を付与
 
 // 個々のポケモンのデータ型
@@ -177,9 +178,19 @@ export interface PokemonDetail {
   past_types: PokemonPastTypes[]; // 過去世代で持っていたタイプの一覧
 }
 
+// ポケモンの詳細データと前後20匹ずつのAPIのURLを格納した型
+// 型
+export type PokemonDetailAndURL = Pick<PokemonListResponse, 'next' | 'previous'> & { pokemonDetailData: PokemonDetail[] };
+
 // neverthrow で使用するエラー型
 export interface FetchError {
   type: 'HTTP_ERROR' | 'NETWORK_ERROR' | 'PARSE_ERROR';
   message: string;
   status?: number; // HTTPエラーの場合のみ
 }
+
+//// 状態変数の定義
+// useStateのの中身を更新するための型
+export type setURL = Dispatch<SetStateAction<PokemonListResponse['previous']> | PokemonListResponse['next']>;
+export type setBoolean = Dispatch<SetStateAction<boolean>>;
+export type setTypePokemonDetailData = Dispatch<SetStateAction<PokemonDetail[]>>;
