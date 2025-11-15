@@ -20,11 +20,14 @@ interface CardProps {
  */
 const getTypes = ({ pokemon }: CardProps): React.ReactNode => {
   // mapの結果を直接返すことで型がReact.ReactNodeになるように設定
-  return pokemon.types.map((eachType) => {
+  // map機能を使用⇒エラー解消のためにReact.Fragmentでkey指定
+  return pokemon.types.map((eachType, index) => {
     return (
-      <div>
-        <span className='typeName'>{eachType.type.name}</span>
-      </div>
+      <React.Fragment key={index}>
+        <div>
+          <span className='typeName'>{eachType.type.name}</span>
+        </div>
+      </React.Fragment>
     );
   });
 };
@@ -42,8 +45,8 @@ const Card = ({ pokemon }: CardProps): React.ReactNode => {
       </div>
       <h3 className='cardName'>{pokemon.name}</h3>
       <div className='cardTypes'>
-        <div>タイプ</div>
-        <div>{getTypes({ pokemon })}</div>
+        <div className='typeTitle'>タイプ</div>
+        <div className='typeDetail'>{getTypes({ pokemon })}</div>
       </div>
       <div className='cardInfo'>
         <div className='cardData'>
