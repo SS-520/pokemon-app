@@ -1,0 +1,6 @@
+// 上下左右中央寄せ
+@mixin itemCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

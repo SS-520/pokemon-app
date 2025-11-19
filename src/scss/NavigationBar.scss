@@ -1,4 +1,5 @@
 // ナビゲーションバーのスタイル
+@use 'mixins'; // ミックスイン読み込み
 
 @import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
 nav {
@@ -7,7 +8,5 @@ nav {
   color: #fff2f2;
   height: 10vh;
   font-size: 5vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include mixins.itemCenter;
 }
