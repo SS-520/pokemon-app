@@ -21,6 +21,19 @@ Currently, two official plugins are available:
   - 最適化ツール：cssnano（本番ビルドのみ）
   - 他ツール：postcss-sort-media-queries（メディアクエリごとに整理）
 
+### 教材内実装項目
+
+- `fetch`機能の使用と API の取得の仕方
+- `async/await`の使い方
+- コンポーネントの作り方
+
+### 自己アレンジ内容
+
+- `fetch`におけるエラー処理実装
+- 非同期処理にて`neverthrow`ライブラリの使用
+- 処理の部品化
+- コーディングの簡略化
+
 ## React Compiler
 
 The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
