@@ -26,6 +26,7 @@ Currently, two official plugins are available:
 - `fetch`機能の使用と API の取得の仕方
 - `async/await`の使い方
 - コンポーネントの作り方
+- PC 向けの画面設定
 
 ### 自己アレンジ内容
 
